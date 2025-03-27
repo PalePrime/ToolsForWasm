@@ -29,3 +29,5 @@ LDFLAGS="\
 
 cp bin/verilator_bin $DST_PATH/verilator_bin.mjs
 cp bin/verilator_bin.wasm $DST_PATH/verilator_bin.wasm
+
+rm include.o include.s a.wasm
