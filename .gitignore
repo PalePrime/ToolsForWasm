@@ -1,1 +1,6 @@
-dist/*.*
+wasm/*/
+native/*/
+build/*/
+builds
+*.DS_Store
+
