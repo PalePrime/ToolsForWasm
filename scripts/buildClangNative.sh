@@ -1,8 +1,9 @@
 #!/bin/bash
 
-source ./activate.sh
-SRC_PATH=$SRC_ROOT/llvm-project/llvm
+THIS_PATH=$(dirname $(realpath "${BASH_SOURCE[0]:-"$(command -v -- "$0")"}" ))
+source $THIS_PATH/../activate.sh
 
+SRC_PATH=$SRC_ROOT/llvm-project/llvm
 DST_PATH=$NATIVE_ROOT/clang
 
 cmake -S $SRC_PATH -B buildClangNative \

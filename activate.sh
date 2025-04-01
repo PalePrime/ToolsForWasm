@@ -1,11 +1,15 @@
+#THIS_SCRIPT=$(realpath "${BASH_SOURCE[0]:-"$(command -v -- "$0")"}" )
 
-SCRIPT_ROOT=$(dirname $0)
-TOOL_ROOT=$(realpath "$SCRIPT_ROOT/../")
-SDK_ROOT=$TOOL_ROOT/sdks
+TOOL_ROOT=$(dirname $(realpath "${BASH_SOURCE[0]:-"$(command -v -- "$0")"}" ))
+
+echo "Root of ToolsForWasm is at $TOOL_ROOT"
+
+EM_ROOT=$TOOL_ROOT/emscripten
 SRC_ROOT=$TOOL_ROOT
 NATIVE_ROOT=$TOOL_ROOT/native
 WASM_ROOT=$TOOL_ROOT/wasm
 BUILD_ROOT=$TOOL_ROOT/build
+TEST_ROOT=$TOOL_ROOT/test
 
 BASE_EM_LDFLAGS="\
   -sEXPORT_ES6 \
@@ -15,5 +19,3 @@ BASE_EM_LDFLAGS="\
 
 HOST_SDK=`xcrun --show-sdk-path`
 
-EMSDK_QUIET=1
-source $SDK_ROOT/emsdk/emsdk_env.sh

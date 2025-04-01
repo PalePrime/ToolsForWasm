@@ -1,6 +1,7 @@
 #!/bin/bash
 
-source ./activate.sh
+THIS_PATH=$(dirname $(realpath "${BASH_SOURCE[0]:-"$(command -v -- "$0")"}" ))
+source $THIS_PATH/../activate.sh
 
 SRC=$(dirname $0)
 SRC_PATH=$SRC_ROOT/verilator

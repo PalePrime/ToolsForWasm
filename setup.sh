@@ -1,7 +1,15 @@
 #!/bin/bash
 
-cd sdks/emsdk
+THIS_PATH=$(dirname $(realpath "${BASH_SOURCE[0]:-"$(command -v -- "$0")"}" ))
+source $THIS_PATH/activate.sh
 
-./emsdk install  3.1.68
-./emsdk activate 3.1.68
+cd emscripten
+
+cat - > .emscripten <<EOF
+LLVM_ROOT='$NATIVE_ROOT/clang/bin'
+BINARYEN_ROOT='$NATIVE_ROOT/binaryen'
+NODE_JS='/opt/homebrew/opt/node/bin/node'
+EOF
+
+./bootstrap
 

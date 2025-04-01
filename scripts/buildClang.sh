@@ -1,8 +1,9 @@
 #!/bin/bash
 
-source ./activate.sh
-SRC_PATH=$SRC_ROOT/llvm-project/llvm
+THIS_PATH=$(dirname $(realpath "${BASH_SOURCE[0]:-"$(command -v -- "$0")"}" ))
+source $THIS_PATH/../activate.sh
 
+SRC_PATH=$SRC_ROOT/llvm-project/llvm
 DST_PATH=$WASM_ROOT/clang
 
 emcmake cmake --fresh -S $SRC_PATH -B $BUILD_ROOT/buildClangWasm \
@@ -27,7 +28,6 @@ emcmake cmake --fresh -S $SRC_PATH -B $BUILD_ROOT/buildClangWasm \
   -DCMAKE_INSTALL_PREFIX=$DST_PATH \
   -DCMAKE_CXX_FLAGS="-Dwait4=__syscall_wait4" \
   -DCMAKE_EXE_LINKER_FLAGS="$BASE_EM_LDFLAGS"
-
 
 #cmake --build $BUILD_ROOT/buildClangWasm
 
