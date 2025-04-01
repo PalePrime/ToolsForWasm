@@ -4,6 +4,9 @@
 [submodule "verilator"]
 	path = verilator
 	url = https://github.com/verilator/verilator.git
-[submodule "sdks/emsdk"]
-	path = sdks/emsdk
-	url = https://github.com/emscripten-core/emsdk.git
+[submodule "emscripten"]
+	path = emscripten
+	url = https://github.com/emscripten-core/emscripten.git
+[submodule "binaryen"]
+	path = binaryen
+	url = https://github.com/WebAssembly/binaryen.git
