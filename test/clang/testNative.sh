@@ -5,6 +5,10 @@ source $THIS_PATH/../../activate.sh
 
 cd $BUILD_ROOT/test
 
-$NATIVE_ROOT/clang/bin/clang -isysroot $HOST_SDK $TEST_ROOT/code/random_pi.c -o random_pi
+for File in "printargs" "random_pi" ;
+  do
+    echo $File
+    $NATIVE_ROOT/clang/bin/clang --sysroot=$HOST_SDK $TEST_ROOT/code/$File.c -o $File
+    $EM_ROOT/emcc -g $BASE_EM_LDFLAGS $TEST_ROOT/code/$File.c -o $File.js
+  done
 
-$EM_ROOT/emcc $TEST_ROOT/code/random_pi.c -o random_pi.js

@@ -10,3 +10,6 @@
 [submodule "binaryen"]
 	path = binaryen
 	url = https://github.com/WebAssembly/binaryen.git
+[submodule "yosys"]
+	path = yosys
+	url = https://github.com/YosysHQ/yosys.git

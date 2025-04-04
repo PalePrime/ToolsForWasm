@@ -13,3 +13,5 @@ EOF
 
 ./bootstrap
 
+./embuilder build MINIMAL
+./embuilder --pic build MINIMAL
