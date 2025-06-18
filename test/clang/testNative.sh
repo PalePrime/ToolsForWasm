@@ -3,6 +3,7 @@
 THIS_PATH=$(dirname $(realpath "${BASH_SOURCE[0]:-"$(command -v -- "$0")"}" ))
 source $THIS_PATH/../../activate.sh
 
+mkdir -p $BUILD_ROOT/test
 cd $BUILD_ROOT/test
 
 for File in "printargs" "random_pi" ;

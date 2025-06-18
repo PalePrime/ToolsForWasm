@@ -10,6 +10,6 @@ cmake --fresh -S $SRC_PATH -B $BUILD_ROOT/buildBinaryenNative \
   -DBUILD_TESTS=OFF \
   -DCMAKE_INSTALL_PREFIX=$DST_PATH
 
-cmake --build buildBinaryenNative
-cmake --install buildBinaryenNative
+cmake --build $BUILD_ROOT/buildBinaryenNative
+cmake --install $BUILD_ROOT/buildBinaryenNative
 

@@ -12,16 +12,18 @@ cd $SRC_PATH
 
 unset VERILATOR_ROOT
 
+make clean
+
 $EM_ROOT/tools/file_packager \
   verilator_include --embed include@/usr/local/share/verilator/include --obj-output=include.o
 
 autoconf
 
-_CPPFLAGS=-I/opt/homebrew/include
-_CXXFLAGS="-DVL_IGNORE_UNKNOWN_ARCH"
+_CPPFLAGS=-I/opt/homebrew/opt/flex/include
+_CXXFLAGS=-DVL_IGNORE_UNKNOWN_ARCH
 _LDFLAGS=$BASE_EM_LDFLAGS -sSTACK_SIZE=1048576 $SRC_PATH/include.o
 
-$EM_ROOT/emconfigure ./configure CXXFLAGS=$_CXXFLAGS LDFLAGS=$_LDFLAGS CPPFLAGS=$_CPPFLAGS
+$EM_ROOT/emconfigure ./configure LEX=/opt/homebrew/opt/flex/bin/flex CXXFLAGS="$_CXXFLAGS" LDFLAGS="$_LDFLAGS" CPPFLAGS="$_CPPFLAGS"
 make
 
 cp bin/verilator_bin      $DST_PATH/verilator_bin.mjs

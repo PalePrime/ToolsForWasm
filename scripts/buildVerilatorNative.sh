@@ -10,6 +10,8 @@ DST_PATH=$NATIVE_ROOT/verilator
 
 cd $SRC_PATH
 
+make clean
+
 unset VERILATOR_ROOT
 
 autoconf
@@ -18,4 +20,4 @@ _CPPFLAGS=-I/opt/homebrew/include
 
 ./configure --prefix $DST_PATH CPPFLAGS=$_CPPFLAGS #CXXFLAGS=$_CXXFLAGS LDFLAGS=$_LDFLAGS 
 make
-
+make install

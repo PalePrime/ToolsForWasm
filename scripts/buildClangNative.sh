@@ -6,7 +6,7 @@ source $THIS_PATH/../activate.sh
 SRC_PATH=$SRC_ROOT/llvm-project/llvm
 DST_PATH=$NATIVE_ROOT/clang
 
-cmake -S $SRC_PATH -B buildClangNative \
+cmake -S $SRC_PATH -B $BUILD_ROOT/buildClangNative \
   -DLLVM_ENABLE_PROJECTS="clang;lld" \
   -DLLVM_TARGETS_TO_BUILD="AArch64;WebAssembly;RISCV" \
   -DCMAKE_BUILD_TYPE=Release \
@@ -22,5 +22,6 @@ cmake -S $SRC_PATH -B buildClangNative \
   -DDEFAULT_SYSROOT=$HOST_SDK \
   -DCMAKE_INSTALL_PREFIX=$DST_PATH
 
-#cmake --build buildClangNative
+cmake --build $BUILD_ROOT/buildClangNative
+cmake --install $BUILD_ROOT/buildClangNative
 

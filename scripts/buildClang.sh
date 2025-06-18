@@ -29,8 +29,8 @@ $EM_ROOT/emcmake cmake --fresh -S $SRC_PATH -B $BUILD_ROOT/buildClangWasm \
  -DCMAKE_CXX_FLAGS="-Dwait4=__syscall_wait4 -pthread" \
  -DCMAKE_EXE_LINKER_FLAGS="$BASE_EM_LDFLAGS -pthread -sASSERTIONS -sSTACK_SIZE=8388608 -sINITIAL_MEMORY=67108864 -g"
 
-#cmake --build $BUILD_ROOT/buildClangWasm --clean-first  -j 4
-#cmake --install $BUILD_ROOT/buildClangWasm
+cmake --build $BUILD_ROOT/buildClangWasm --clean-first  -j 4
+cmake --install $BUILD_ROOT/buildClangWasm
 
-#cp $BUILD_ROOT/buildClangWasm/bin/*.wasm $DST_PATH/bin
-#mv $DST_PATH/bin/clang.js-?? $DST_PATH/bin/clang.js
+cp $BUILD_ROOT/buildClangWasm/bin/*.wasm $DST_PATH/bin
+mv $DST_PATH/bin/clang.js-?? $DST_PATH/bin/clang.js
