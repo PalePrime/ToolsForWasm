@@ -13,3 +13,12 @@
 [submodule "yosys"]
 	path = yosys
 	url = https://github.com/YosysHQ/yosys.git
+[submodule "fujprog"]
+	path = fujprog
+	url = https://github.com/kost/fujprog.git
+[submodule "libftdi"]
+	path = libftdi
+	url = https://github.com/lipro/libftdi.git
+[submodule "libusb"]
+	path = libusb
+	url = https://github.com/libusb/libusb.git
