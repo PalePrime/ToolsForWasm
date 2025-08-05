@@ -1,0 +1,32 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index a9adf59..7fcf65a 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -44,9 +44,11 @@ if (MSVC)
+ 	$<$<CONFIG:Release>:/MT> #--|
+ 	)
+ else()
+-	find_package(PkgConfig REQUIRED)
+-	pkg_check_modules(LIBFTDI REQUIRED libftdi1)
+-	pkg_check_modules(LIBUSB REQUIRED libusb-1.0)
++	if (!WASM)
++		find_package(PkgConfig REQUIRED)
++		pkg_check_modules(LIBFTDI REQUIRED libftdi1)
++		pkg_check_modules(LIBUSB REQUIRED libusb-1.0)
++	endif()
+ 	link_directories(${LIBUSB_LIBRARY_DIRS} ${LIBFTDI_LIBRARY_DIRS})
+ endif()
+ 
+diff --git a/fujprog.c b/fujprog.c
+index 2def0b8..42bb543 100644
+--- a/fujprog.c
++++ b/fujprog.c
+@@ -3935,7 +3935,7 @@ debug_cmd(void)
+ 				break;
+ 			}
+ 			j = i;
+-			while (isnumber(cmdbuf[j]))
++			while (isdigit(cmdbuf[j]))
+ 				j++;
+ 			r = atoi(&cmdbuf[i]);
+ 			i = j;
