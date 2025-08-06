@@ -6,7 +6,7 @@ source $THIS_PATH/../activate.sh
 SRC_PATH=$SRC_ROOT/fujprog
 DST_PATH=$NATIVE_ROOT/fujprog
 
-cmake -S $SRC_PATH -B $BUILD_ROOT/buildFujprogNative \
+cmake --fresh -S $SRC_PATH -B $BUILD_ROOT/buildFujprogNative \
   -DCMAKE_INSTALL_PREFIX=$DST_PATH
 
 cmake --build $BUILD_ROOT/buildFujprogNative

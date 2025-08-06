@@ -6,6 +6,7 @@ echo "Root of ToolsForWasm is at $TOOL_ROOT"
 
 EM_ROOT=$TOOL_ROOT/emscripten
 SRC_ROOT=$TOOL_ROOT
+PATCH_ROOT=$TOOL_ROOT/patch
 NATIVE_ROOT=$TOOL_ROOT/native
 WASM_ROOT=$TOOL_ROOT/wasm
 BUILD_ROOT=$TOOL_ROOT/build
