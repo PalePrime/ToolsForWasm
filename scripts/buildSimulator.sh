@@ -82,6 +82,8 @@ cd $BUILD_ROOT/simulator_model
 #  $VERILATOR_INCLUDES $VERILATOR_DEFINES $VERILATOR_FLAGS\
 #  -o top.wasm top*.cpp
 
+awk 'FNR==1{print ""}1' *.cpp > all.cpp
+
 $CLANG_ROOT/bin/clang++\
  -target wasm32-unknown-emscripten\
  -fignore-exceptions\
@@ -95,12 +97,12 @@ $CLANG_ROOT/bin/clang++\
  -Xclang -iwithsysroot/include/compat\
  -c -Os -MMD\
  $VERILATOR_INCLUDES $VERILATOR_DEFINES $VERILATOR_FLAGS\
- top*.cpp
+ all.cpp
 
 $CLANG_ROOT/bin/wasm-ld\
  -o top.wasm\
  --whole-archive\
- top*.o\
+ all.o\
  --no-whole-archive\
  -mllvm -combiner-global-alias-analysis=false\
  -mllvm -enable-emscripten-sjlj\

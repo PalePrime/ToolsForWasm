@@ -17,7 +17,7 @@ $EM_ROOT/emcmake cmake  --fresh -S $SRC_PATH -B $BUILD_ROOT/buildFujprogWasm \
   -DLIBUSB_INCLUDE_DIRS="$WASM_ROOT/libusb/include/libusb-1.0" \
   -DLIBUSB_LIBRARIES="-L$WASM_ROOT/libusb/lib -lusb-1.0" \
   -DCMAKE_CXX_FLAGS="-pthread -sSHARED_MEMORY=1" \
-  -DCMAKE_EXE_LINKER_FLAGS="$BASE_EM_LDFLAGS -pthread -sSHARED_MEMORY=1 -lembind -sASYNCIFY=1 -g" \
+  -DCMAKE_EXE_LINKER_FLAGS="$BASE_EM_LDFLAGS -pthread -sSHARED_MEMORY=1 -sSTACK_SIZE=262144 -lembind -sASYNCIFY=1 -g" \
   -DCMAKE_INSTALL_PREFIX=$DST_PATH
 
 
