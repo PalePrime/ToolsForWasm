@@ -21,7 +21,7 @@ int main(int argc, char* argv[]) {
 }
 EOF
 
-$EM_ROOT/emcc -Os $BASE_EM_LDFLAGS -o $NAME.js $NAME.c include.o
+$EM_ROOT/emcc $BASE_EM_LDFLAGS -o $NAME.js $NAME.c include.o
 
 if [ ! -d $DST_PATH ]; then
   mkdir $DST_PATH

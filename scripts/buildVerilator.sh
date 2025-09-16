@@ -19,9 +19,9 @@ $EM_ROOT/tools/file_packager \
 
 autoconf
 
-_CPPFLAGS=-I/opt/homebrew/opt/flex/include
-_CXXFLAGS=-DVL_IGNORE_UNKNOWN_ARCH
-_LDFLAGS=$BASE_EM_LDFLAGS -sSTACK_SIZE=1048576 $SRC_PATH/include.o
+_CPPFLAGS="-I/opt/homebrew/opt/flex/include"
+_CXXFLAGS="-DVL_IGNORE_UNKNOWN_ARCH"
+_LDFLAGS="$BASE_EM_LDFLAGS -sSTACK_SIZE=1048576 $SRC_PATH/include.o"
 
 $EM_ROOT/emconfigure ./configure LEX=/opt/homebrew/opt/flex/bin/flex CXXFLAGS="$_CXXFLAGS" LDFLAGS="$_LDFLAGS" CPPFLAGS="$_CPPFLAGS"
 make
