@@ -13,7 +13,7 @@ fi
 cd $BUILD_PATH
 
 $EM_ROOT/tools/file_packager \
-  $NAME --embed  $EM_ROOT/cache/sysroot@/em_sysroot --obj-output=include.o
+  $NAME --embed  $EM_ROOT/cache/sysroot/include@/em_sysroot/include --obj-output=include.o
 
 cat - > $NAME.c <<EOF
 int main(int argc, char* argv[]) {
@@ -21,7 +21,8 @@ int main(int argc, char* argv[]) {
 }
 EOF
 
-$EM_ROOT/emcc $BASE_EM_LDFLAGS -o $NAME.js $NAME.c include.o
+$EM_ROOT/emcc $BASE_EM_LDFLAGS -sFS_DEBUG -o $NAME.js $NAME.c include.o
+# $EM_ROOT/emcc $BASE_EM_LDFLAGS -o $NAME.js $NAME.c include.o
 
 if [ ! -d $DST_PATH ]; then
   mkdir $DST_PATH
