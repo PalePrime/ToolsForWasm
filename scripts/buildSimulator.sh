@@ -45,6 +45,9 @@ VERILATOR_DEFINES="\
 
 cd $TEST_ROOT/code
 
+rm $BUILD_ROOT/simulator/top*.*
+rm $BUILD_ROOT/simulator_model/top*.*
+
 $VER_ROOT/bin/verilator --cc --Mdir $BUILD_ROOT/simulator       --prefix top --main --timing --assert --trace dummy.sv
 $VER_ROOT/bin/verilator --cc --Mdir $BUILD_ROOT/simulator_model --prefix top --main --timing --assert --trace TestMooreMachine.sv
 
@@ -72,7 +75,7 @@ $EMXX -Os -sSIDE_MODULE -sERROR_ON_UNDEFINED_SYMBOLS=0 -I.  -MMD\
  -o top.wasm top*.cpp
 
 $EMXX -Os -sMAIN_MODULE -sERROR_ON_UNDEFINED_SYMBOLS=0 -I.  -MMD\
- $BASE_EM_LDFLAGS -g\
+ $BASE_EM_LDFLAGS\
  -o simulator.js verilated.o verilated_vcd_c.o\
  verilated_threads.o verilated_timing.o verilated_random.o top.wasm
 
