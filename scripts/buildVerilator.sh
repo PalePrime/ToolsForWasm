@@ -8,6 +8,8 @@ SRC_PATH=$SRC_ROOT/verilator
 
 DST_PATH=$WASM_ROOT/verilator
 
+mkdir -p $DST_PATH
+
 cd $SRC_PATH
 
 unset VERILATOR_ROOT

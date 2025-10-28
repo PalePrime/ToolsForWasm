@@ -19,6 +19,7 @@ VERILATOR_ROOT=$VER_ROOT/share/verilator
 BASE_EM_LDFLAGS="\
   -sEXPORT_ES6 \
   -sEXPORTED_RUNTIME_METHODS=FS,PROXYFS,callMain,noExitRuntime,exitJS \
+  -sEXIT_RUNTIME=1 \
   -sALLOW_MEMORY_GROWTH \
   -sFORCE_FILESYSTEM \
   -lproxyfs.js"
