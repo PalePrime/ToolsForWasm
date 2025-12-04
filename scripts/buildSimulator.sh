@@ -48,12 +48,15 @@ cd $TEST_ROOT/code
 rm $BUILD_ROOT/simulator/top*.*
 rm $BUILD_ROOT/simulator_model/top*.*
 
-$VER_ROOT/bin/verilator --cc --Mdir $BUILD_ROOT/simulator       --prefix top --main --timing --assert --trace dummy.sv
-$VER_ROOT/bin/verilator --cc --Mdir $BUILD_ROOT/simulator_model --prefix top --main --timing --assert --trace TestMooreMachine.sv
+$VER_ROOT/bin/verilator --cc --Mdir $BUILD_ROOT/simulator       --prefix top --main --timing --assert --trace extra.cc dummy.sv
+$VER_ROOT/bin/verilator --cc --Mdir $BUILD_ROOT/simulator_model --prefix top --main --timing --assert --trace extra.cc TestMooreMachine.sv
 
 cd $BUILD_ROOT/simulator
 
 EMXX="$EM_ROOT/em++"
+
+$EMXX -Os -MMD $VERILATOR_INCLUDES $VERILATOR_DEFINES $VERILATOR_FLAGS\
+ -c -o extra.o $TEST_ROOT/code/extra.cc
 
 $EMXX -Os -MMD $VERILATOR_INCLUDES $VERILATOR_DEFINES $VERILATOR_FLAGS\
  -c -o verilated.o $VERILATOR_ROOT/include/verilated.cpp
@@ -70,14 +73,17 @@ $EMXX -Os -MMD $VERILATOR_INCLUDES $VERILATOR_DEFINES $VERILATOR_FLAGS\
 $EMXX -Os -MMD $VERILATOR_INCLUDES $VERILATOR_DEFINES $VERILATOR_FLAGS\
  -c -o verilated_random.o $VERILATOR_ROOT/include/verilated_random.cpp
 
+$EMXX -Os -MMD $VERILATOR_INCLUDES $VERILATOR_DEFINES $VERILATOR_FLAGS\
+ -c -o verilated_dpi.o $VERILATOR_ROOT/include/verilated_dpi.cpp
+
 $EMXX -Os -sSIDE_MODULE -sERROR_ON_UNDEFINED_SYMBOLS=0 -I.  -MMD\
  $VERILATOR_INCLUDES $VERILATOR_DEFINES $VERILATOR_FLAGS\
  -o top.wasm top*.cpp
 
 $EMXX -Os -sMAIN_MODULE -sERROR_ON_UNDEFINED_SYMBOLS=0 -I.  -MMD\
  $BASE_EM_LDFLAGS\
- -o simulator.js verilated.o verilated_vcd_c.o\
- verilated_threads.o verilated_timing.o verilated_random.o top.wasm
+ -o simulator.js extra.o verilated.o verilated_vcd_c.o\
+ verilated_threads.o verilated_timing.o verilated_random.o verilated_dpi.o top.wasm
 
 cd $BUILD_ROOT/simulator_model
 

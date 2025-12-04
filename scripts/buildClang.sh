@@ -8,7 +8,7 @@ DST_PATH=$WASM_ROOT/clang
 
 $EM_ROOT/emcmake cmake --fresh -S $SRC_PATH -B $BUILD_ROOT/buildClangWasm \
  -DLLVM_ENABLE_PROJECTS="clang;lld" \
- -DLLVM_TARGETS_TO_BUILD="WebAssembly;RISCV" \
+ -DLLVM_TARGETS_TO_BUILD="WebAssembly" \
  -DCMAKE_BUILD_TYPE=MinSizeRel \
  -DLLVM_HOST_TRIPLE=wasm32-unknown-emscripten \
  -DLLVM_ENABLE_ASSERTIONS=ON \
@@ -26,8 +26,10 @@ $EM_ROOT/emcmake cmake --fresh -S $SRC_PATH -B $BUILD_ROOT/buildClangWasm \
  -DCLANG_ENABLE_BOOTSTRAP=OFF \
  -DCMAKE_PREFIX_PATH=$DST_PATH \
  -DCMAKE_INSTALL_PREFIX=$DST_PATH \
- -DCMAKE_CXX_FLAGS="-Dwait4=__syscall_wait4 -O2" \
- -DCMAKE_EXE_LINKER_FLAGS="$BASE_EM_LDFLAGS -sSTACK_SIZE=8388608 -sINITIAL_MEMORY=67108864 -O2"
+ -DCMAKE_CXX_FLAGS="-Dwait4=__syscall_wait4 -Os" \
+ -DCMAKE_EXE_LINKER_FLAGS="$BASE_EM_LDFLAGS -sSTACK_SIZE=16777216 -sINITIAL_MEMORY=67108864 -Os"
+
+# -DLLVM_TARGETS_TO_BUILD="WebAssembly;RISCV"
 
 cmake --build $BUILD_ROOT/buildClangWasm --clean-first  -j 4
 cmake --install $BUILD_ROOT/buildClangWasm
