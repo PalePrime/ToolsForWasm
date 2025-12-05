@@ -5,17 +5,20 @@ extern "C" {
     extern void gatherStats();
     extern int moduleExists(const char* name);
     extern int gateCount(const char* name);
+    extern int onlyAssigns(const char* name);
     extern int onlyGates(const char* name);
     extern void printStats(const char* name);
     extern int hashMe();
 }
 
+#include <filesystem>
 #include <iostream>
 #include <fstream>
 #include <regex>
 
 #include "json.hpp"
 
+namespace fs = std::filesystem;
 using json = nlohmann::json;
 using namespace std;
 
@@ -30,9 +33,10 @@ string callingFile() {
 
 int hashMe() {
     const string filename = callingFile();
+    fs::path thePath{filename} ;
     int lineno = 0;
     int theHash = 42;
-    if (filename.size()>0) {
+    if (filename.size()>0 && fs::exists(thePath)) {
         cout << "Computing hash for file " << filename << "\n";
         ifstream file(filename);
         while(!file.eof()) {
@@ -41,6 +45,7 @@ int hashMe() {
         }
         return theHash;
     } else {
+        cout << "Cannot compute hash for non-existing file " << filename << "\n";
         return 0;
     }
 }
@@ -87,7 +92,6 @@ map<string, json> modules;
 map<string, mod_info> modInfo;
 
 void parseExpression(json e, expr_info *e_info) {
-    //cout << "Enter parseExpression\n";
     if (e.size() != 1) {
         if (e.size() > 1) cout << "Bad expression!\n";
     } else {
@@ -95,7 +99,6 @@ void parseExpression(json e, expr_info *e_info) {
         string e_name = (string)expr["name"];
         string e_type = (string)expr["type"];
         int l_bits, r_bits = 1;
-        //cout << "  parsing " << e_type << "\n";
         if (e_type == "AND" || e_type == "OR" || e_type == "XOR") {
             parseExpression(expr["lhsp"], e_info);
             l_bits = e_info->bits;
@@ -107,7 +110,6 @@ void parseExpression(json e, expr_info *e_info) {
             parseExpression(expr["lhsp"], e_info);
             e_info->inv_cnt += e_info->bits;
         } else if (e_type == "PARSEREF") {
-            // cout << "   var: " << (string)expr["name"] << "\n";
             e_info->vars.push_back((string)expr["name"]);
         } else if (e_type == "CONST") {
             regex r = regex("(\\d+)$");
@@ -119,7 +121,6 @@ void parseExpression(json e, expr_info *e_info) {
                 auto& t_value = m[0];
                 value = atoi(t_value.first.base());
             }
-            // cout << "   const: " << a_value << "  " << value << "\n";
             e_info->value = value;
         } else if (e_type == "SELBIT") {
             expr_info b_info;
@@ -151,21 +152,20 @@ void parseExpression(json e, expr_info *e_info) {
             e_info->complex_cnt += l_bits;
         }
     }
-    //cout << "Exit parseExpression, gates: " << gates << "\n";
 } 
 
 void gatherStats() {
     json j;
-    string s = callingFile();
-    string file = "obj_dir/V";
-    file.append(s.erase(s.find(".sv")));
-    file.append("_002_cellsort.tree.json");
+    const string file = "obj_dir/top_002_cellsort.tree.json";
 
-    try {
+    fs::path thePath{file};
+
+
+    if (fs::exists(thePath)) {
         fstream j_file(file);
         j_file >> j;
-    } catch (int err) {
-        cout << "Failed to load Verilator parse tree";
+    } else {
+        cout << "Failed to load Verilator parse tree from " << file << "\n";
         j = {"failure", true};
     }
 
@@ -243,12 +243,25 @@ int gateCount(const char* name) {
     return result;
 }
 
+int onlyAssigns(const char* name) {
+    int result = 0;
+    const string n = string(name);
+    mod_info info = modInfo[name];
+    if (n == info.name) {
+        if (info.always_cnt == 0 && info.instance_cnt == 0) result = 1;
+    } else {
+        cout << "  Module " << n << " not found when checking for assigns only!\n";
+        result = -1;
+    }
+    return result;
+}
+
 int onlyGates(const char* name) {
     int result = 0;
     const string n = string(name);
     mod_info info = modInfo[name];
     if (n == info.name) {
-        if (info.always_cnt == 0 && info.complex_cnt == 0) result = 1;
+        if (info.always_cnt == 0 && info.instance_cnt == 0 && info.complex_cnt == 0) result = 1;
     } else {
         cout << "  Module " << n << " not found when checking for gates only!\n";
         result = -1;

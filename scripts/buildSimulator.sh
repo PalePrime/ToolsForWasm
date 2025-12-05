@@ -4,7 +4,7 @@ THIS_PATH=$(dirname $(realpath "${BASH_SOURCE[0]:-"$(command -v -- "$0")"}" ))
 source $THIS_PATH/../activate.sh
 
 SRC_PATH=$SRC_ROOT/llvm-project/llvm
-DST_PATH=$WASM_ROOT/clang
+DST_PATH=$WASM_ROOT/verilator
 
 echo "Verilator root: $VERILATOR_ROOT"
 
@@ -84,6 +84,8 @@ $EMXX -Os -sMAIN_MODULE -sERROR_ON_UNDEFINED_SYMBOLS=0 -I.  -MMD\
  $BASE_EM_LDFLAGS\
  -o simulator.js extra.o verilated.o verilated_vcd_c.o\
  verilated_threads.o verilated_timing.o verilated_random.o verilated_dpi.o top.wasm
+
+cp simulator.* $DST_PATH
 
 cd $BUILD_ROOT/simulator_model
 
