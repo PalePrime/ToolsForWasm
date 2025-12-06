@@ -3,4 +3,4 @@ native/*/
 build/*/
 builds
 *.DS_Store
-
+.vscode
