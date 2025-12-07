@@ -289,9 +289,9 @@ void printStats(const char* name) {
         for (auto i : info.instances) {
             cout << "    " << i.name << " of " << i.mod_name << "\n";
         }
-        cout << "  Inverters:    " << info.gate_cnt << "\n";
+        cout << "  Inverters:    " << info.inv_cnt << "\n";
         cout << "  Gates:        " << info.gate_cnt << "\n";
-        cout << "  Other ops:    " << info.gate_cnt << "\n";
+        cout << "  Other ops:    " << info.complex_cnt << "\n";
     } else {
         cout << "  No such module found in the design!\n";
     }
