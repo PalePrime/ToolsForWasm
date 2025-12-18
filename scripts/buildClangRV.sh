@@ -1,0 +1,40 @@
+#!/bin/bash
+
+THIS_PATH=$(dirname $(realpath "${BASH_SOURCE[0]:-"$(command -v -- "$0")"}" ))
+source $THIS_PATH/../activate.sh
+
+SRC_PATH=$SRC_ROOT/llvm-project/llvm
+DST_PATH=$WASM_ROOT/clangRV
+
+$EM_ROOT/emcmake cmake --fresh -S $SRC_PATH -B $BUILD_ROOT/buildClangRVWasm \
+ -DLLVM_ENABLE_PROJECTS="clang;lld" \
+ -DLLVM_TARGETS_TO_BUILD="RISCV" \
+ -DCMAKE_BUILD_TYPE=MinSizeRel \
+ -DLLVM_HOST_TRIPLE=wasm32-unknown-emscripten \
+ -DLLVM_ENABLE_ASSERTIONS=ON \
+ -DLLVM_INCLUDE_EXAMPLES=OFF \
+ -DLLVM_INCLUDE_TESTS=OFF \
+ -DLLVM_INCLUDE_BENCHMARKS=OFF \
+ -DLLVM_INCLUDE_DOCS=OFF \
+ -DLLVM_ENABLE_LIBEDIT=OFF \
+ -DLLVM_ENABLE_THREADS=OFF \
+ -DLLVM_ENABLE_PIC=ON \
+ -DLLVM_ENABLE_ZSTD=OFF \
+ -DLLVM_ENABLE_LIBXML2=OFF \
+ -DCLANG_ENABLE_STATIC_ANALYZER=OFF \
+ -DCLANG_ENABLE_ARCMT=OFF \
+ -DCLANG_ENABLE_BOOTSTRAP=OFF \
+ -DCMAKE_PREFIX_PATH=$DST_PATH \
+ -DCMAKE_INSTALL_PREFIX=$DST_PATH \
+ -DCMAKE_CXX_FLAGS="-Dwait4=__syscall_wait4 -Os" \
+ -DCMAKE_EXE_LINKER_FLAGS="$BASE_EM_LDFLAGS -sSTACK_SIZE=16777216 -sINITIAL_MEMORY=67108864 -Os"
+
+
+# -DLLVM_ENABLE_RUNTIMES="libcxx;libcxxabi;libunwind;compiler-rt" \
+# -DLLVM_TARGETS_TO_BUILD="WebAssembly;RISCV"
+
+cmake --build $BUILD_ROOT/buildClangRVWasm --clean-first # -j 4
+cmake --install $BUILD_ROOT/buildClangRVWasm
+
+cp $BUILD_ROOT/buildClangRVWasm/bin/*.wasm $DST_PATH/bin
+mv $DST_PATH/bin/clang.js-?? $DST_PATH/bin/clang.js
