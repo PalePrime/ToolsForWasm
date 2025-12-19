@@ -6,19 +6,25 @@ source $THIS_PATH/../activate.sh
 SRC_PATH=$SRC_ROOT/llvm-project/runtimes
 DST_PATH=$WASM_ROOT/clangRV
 
-C_COMPILER=$NATIVE_ROOT/clang/bin/clang
-CXX_COMPILER=$NATIVE_ROOT/clang/bin/clang++
+#CC=$NATIVE_ROOT/clang/bin/clang
+#CXX=$NATIVE_ROOT/clang/bin/clang++
 
-cmake --fresh -S $SRC_PATH -B $BUILD_ROOT/buildClangRVLibs \
- -DLLVM_ENABLE_RUNTIMES="libc;compiler-rt"  \
- -DCMAKE_C_COMPILER=$C_COMPILER \
- -DCMAKE_CXX_COMPILER=$CXX_COMPILER \
+NATIVE_ROOT=$NATIVE_ROOT cmake --fresh -S $SRC_PATH -B $BUILD_ROOT/buildClangRVLibs \
+ -DPython3_ROOT_DIR=$THIS_PATH/../venv \
+ -DLLVM_ENABLE_RUNTIMES="compiler-rt;libc"  \
+ -DLIBC_TARGET_TRIPLE="riscv32-unknown-elf" \
+ -DCMAKE_TOOLCHAIN_FILE=$THIS_PATH/Toolchain-RISCV.cmake \
+ -DCOMPILER_RT_BAREMETAL_BUILD=ON \
+ -DCOMPILER_RT_BUILD_XRAY=OFF \
+ -DCOMPILER_RT_INCLUDE_TESTS=OFF \
+ -DCOMPILER_RT_HAS_FPIC_FLAG=OFF \
+ -DCOMPILER_RT_DEFAULT_TARGET_ONLY=ON \
  -DLLVM_LIBC_FULL_BUILD=ON \
- -DLIBC_TARGET_TRIPLE=riscv32i-unknown-elf \
+ -DLLVM_LIBC_INCLUDE_SCUDO=ON \
+ -DCOMPILER_RT_BUILD_SCUDO_STANDALONE_WITH_LLVM_LIBC=ON \
+ -DCOMPILER_RT_BUILD_GWP_ASAN=OFF \
+ -DLLVM_INCLUDE_TESTS=OFF \
  -DCMAKE_BUILD_TYPE=Release
 
-# -DLLVM_ENABLE_RUNTIMES="libcxx;libcxxabi;libunwind;compiler-rt" \
-# -DLLVM_TARGETS_TO_BUILD="WebAssembly;RISCV"
-
-cmake --build $BUILD_ROOT/buildClangRVWasm --clean-first  #-j 4
-#cmake --install $BUILD_ROOT/buildClangRVWasm
+#cmake --build $BUILD_ROOT/buildClangRVLibs --clean-first  #-j 4
+#cmake --install $BUILD_ROOT/buildClangRVLibs

@@ -36,5 +36,5 @@ $EM_ROOT/emcmake cmake --fresh -S $SRC_PATH -B $BUILD_ROOT/buildClangRVWasm \
 cmake --build $BUILD_ROOT/buildClangRVWasm --clean-first # -j 4
 cmake --install $BUILD_ROOT/buildClangRVWasm
 
-cp $BUILD_ROOT/buildClangRVWasm/bin/*.wasm $DST_PATH/bin
-mv $DST_PATH/bin/clang.js-?? $DST_PATH/bin/clang.js
+#cp $BUILD_ROOT/buildClangRVWasm/bin/*.wasm $DST_PATH/bin
+#mv $DST_PATH/bin/clang.js-?? $DST_PATH/bin/clang.js

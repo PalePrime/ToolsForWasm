@@ -1,0 +1,30 @@
+# set(WASI TRUE)
+
+set(MY_PATH $ENV{NATIVE_ROOT}/clang)
+# set(MY_PATH /opt/homebrew/Cellar/llvm/19.1.7_1)
+
+set(CMAKE_SYSTEM_NAME Generic)
+set(CMAKE_SYSTEM_VERSION 1)
+set(CMAKE_SYSTEM_PROCESSOR RISCV)
+set(CMAKE_EXECUTABLE_SUFFIX "")
+
+set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
+set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
+set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
+set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY)
+
+set(CMAKE_C_COMPILER ${MY_PATH}/bin/clang)
+set(CMAKE_CXX_COMPILER ${MY_PATH}/bin/clang++)
+set(CMAKE_LINKER ${MY_PATH}/bin/llvm-link CACHE STRING "riscvenv build")
+set(CMAKE_AR ${MY_PATH}/bin/llvm-ar CACHE STRING "riscvenv build")
+set(CMAKE_RANLIB ${MY_PATH}/bin/llvm-ranlib CACHE STRING "riscvenv build")
+set(CMAKE_C_COMPILER_WORKS 1)
+set(CMAKE_CXX_COMPILER_WORKS 1)
+
+set(CMAKE_C_COMPILER_TARGET   riscv32-unknown-elf)
+set(CMAKE_CXX_COMPILER_TARGET riscv32-unknown-elf)
+set(CMAKE_ASM_COMPILER_TARGET riscv32-unknown-elf)
+set(CMAKE_C_FLAGS   "-march=rv32i -mabi=ilp32 -mno-relax" CACHE STRING "riscvenv build")
+set(CMAKE_CXX_FLAGS "-march=rv32i -mabi=ilp32 -mno-relax" CACHE STRING "riscvenv build")
+set(CMAKE_ASM_FLAGS "-march=rv32i -mabi=ilp32 -mno-relax" CACHE STRING "riscvenv build")
+set(CMAKE_EXE_LINKER_FLAGS "" CACHE STRING "riscvenv build")
