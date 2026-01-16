@@ -6,9 +6,6 @@ source $THIS_PATH/../activate.sh
 SRC_PATH=$SRC_ROOT/llvm-project/runtimes
 DST_PATH=$WASM_ROOT/clangRV
 
-#CC=$NATIVE_ROOT/clang/bin/clang
-#CXX=$NATIVE_ROOT/clang/bin/clang++
-
 NATIVE_ROOT=$NATIVE_ROOT cmake --fresh -S $SRC_PATH -B $BUILD_ROOT/buildClangRVLibs \
  -DPython3_ROOT_DIR=$THIS_PATH/../venv \
  -DLLVM_ENABLE_RUNTIMES="compiler-rt;libc"  \
@@ -24,7 +21,9 @@ NATIVE_ROOT=$NATIVE_ROOT cmake --fresh -S $SRC_PATH -B $BUILD_ROOT/buildClangRVL
  -DCOMPILER_RT_BUILD_SCUDO_STANDALONE_WITH_LLVM_LIBC=ON \
  -DCOMPILER_RT_BUILD_GWP_ASAN=OFF \
  -DLLVM_INCLUDE_TESTS=OFF \
+ -DCMAKE_PREFIX_PATH=$DST_PATH \
+ -DCMAKE_INSTALL_PREFIX=$DST_PATH \
  -DCMAKE_BUILD_TYPE=Release
 
-#cmake --build $BUILD_ROOT/buildClangRVLibs --clean-first  #-j 4
-#cmake --install $BUILD_ROOT/buildClangRVLibs
+cmake --build $BUILD_ROOT/buildClangRVLibs --clean-first  #-j 4
+cmake --install $BUILD_ROOT/buildClangRVLibs
